@@ -1,0 +1,24 @@
+---
+
+- name: create azure virtual machine
+  hosts: localhost
+  connection: local
+  vars_files:
+    - vars_files/common.yml
+  # series  
+  tasks:
+    - name: create worker
+      include_role:
+        name: worker
+      with_items: "{{ groups.all }}"
+      vars:
+        worker_name: "{{ item }}"
+- name: create worker server
+  hosts: "{{ groups.all }}"
+  become: true
+  vars_files:
+    - vars_files/common.yml
+
+  # parallel
+  roles:
+    - role: common

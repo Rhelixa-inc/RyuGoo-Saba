@@ -1,0 +1,52 @@
+---
+- name: Create a network interface with private IP address only
+  azure_rm_networkinterface:
+    name: "{{ worker_name }}"
+    resource_group: "{{ resource_group }}"
+    virtual_network_name: "{{ resource_group }}-vnet"
+    subnet_name: "{{ resource_group }}-001-subnet"
+    security_group: "{{ resource_group }}-worker-nsg"
+- name: Create virtual machine
+  azure_rm_virtualmachine:
+    resource_group: "{{ resource_group }}"
+    name: "{{ worker_name }}"
+    # vm料金表
+    # https://azure.microsoft.com/ja-jp/pricing/details/virtual-machines/linux/
+
+    # 指定可能なvm_sizeを調べる
+    # az vm list-sizes --location japaneast | jq -rc '.[] | {"name": .name, "core": .numberOfCores, "memory": .memoryInMb }'
+
+    # 作成可能なvm_size別のコア数合計上限 現在値は、WEBページを参照する
+    # az vm list-usage --location japaneast | jq -rc .[]
+    # https://portal.azure.com/#@nakakirhelixa.onmicrosoft.com/resource/subscriptions/96b3952c-daad-4464-b58f-dff847324383/quotas
+    vm_size: "{{ vm_size }}"
+    admin_username: "{{ username }}"
+    ssh_password_enabled: false
+    ssh_public_keys: 
+      - path: "/home/{{ username }}/.ssh/authorized_keys"
+        key_data: "{{ authorized_keys }}"
+    # 指定可能なOSイメージリストを調べる $ az vm image list --offer UbuntuServer --publisher Canonical --all | jq -rc .[]
+    image:
+      offer: UbuntuServer
+      publisher: Canonical
+      sku: '16.04.0-LTS'
+      version: '16.04.201805220'
+    network_interface_names:  "{{ worker_name }}"
+    managed_disk_type: Standard_LRS
+    os_disk_caching: ReadWrite
+    os_type: Linux
+    started: yes
+    allocated: yes
+- name: resize managed disk
+  script: ./script/resize_virtualmachine.sh {{ resource_group }} {{ vm_name }} {{ gb_size }}
+
+
+
+
+
+
+
+
+
+
+

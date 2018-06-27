@@ -1,0 +1,22 @@
+Host ryugoo-dev-gw-001
+  HostName 13.78.41.110
+Host ryugoo-*
+  User ryugoo
+Host ryugoo-* !ryugoo-dev-gw-*
+  ProxyCommand ssh -W %h:%p ryugoo-dev-gw-001
+Host ryugoo-*
+  ForwardAgent yes
+  ServerAliveInterval 60
+Host *
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+Host github-ryugoo-infra
+  IdentityFile ~/.ssh/ryugoo-infra-id-rsa
+Host github-ryugoo-saba
+  IdentityFile ~/.ssh/ryugoo-saba-id-rsa
+Host github-*
+  User git
+  Port 22
+  HostName github.com
+  TCPKeepAlive yes
+  IdentitiesOnly yes

@@ -1,0 +1,11 @@
+---
+resource_group: RyuGoo-dev
+vm_name: ryugoo-dev-master
+username: ryugoo
+storageaccount:
+  name: ryugoodevdiag
+cidr_prefix: "10.106"
+gb_size: 36
+location: japaneast
+vm_size: Standard_A1_v2
+authorized_keys: hash
