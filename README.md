@@ -10,7 +10,7 @@ Visit [GitHub wiki](https://github.com/Rhelixa-inc/RyuGoo-Saba/wiki) for more de
 - `docker-compose` (version 3)
 
 ## Install
-Use 'git' to fetch the source from GitHub and use docker-compose to create the CLI environment:
+Use `git` to fetch the source from GitHub and use docker-compose to create the CLI environment:
 
 ```
 $ git clone https://github.com/Rhelixa-inc/RyuGoo-Saba.git
